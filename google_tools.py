@@ -2,6 +2,7 @@ import os
 import base64
 import logging
 import html
+import json
 
 from email.message import EmailMessage
 
@@ -50,7 +51,7 @@ CALENDAR_FORMAT = """
 <event>
     <start>{start}</start>
     <summary>{summary}</summary>
-    <creator>{creator}</creator>
+    <calendar>{calendar}</calendar>
 </event>
 """
 
@@ -269,7 +270,7 @@ class Tools:
                     <event>
                         <start>{start}</start>
                         <summary>{summary}</summary>
-                        <creator>{creator}</creator>
+                        <calendar>{calendar}</calendar>
                     </event>
                 </events>
             </output>
@@ -299,7 +300,7 @@ class Tools:
                 event_list += events
             event_list.sort(key=lambda x: x["start"])
             for i in range(count):
-                out += CALENDAR_FORMAT.format(start=event_list[i]["start"], summary=event_list[i]["summary"], creator=event_list[i]["creator"])
+                out += CALENDAR_FORMAT.format(start=event_list[i]["start"], summary=event_list[i]["summary"], calendar=event_list[i]["calendar"])
 
         except HttpError as error:
             out = f"Error fetching calendar data: {str(error)}"
@@ -362,10 +363,24 @@ def get_cal_evts(service, calendarId, number_of_events, from_time) -> list:
     )
     events = events_result.get("items", [])
     for event in events:
+        # print event as JSON
+        # print(json.dumps(event, indent=4))
+        if event["organizer"].get("displayName") == None:
+            calendar = "mine"
+        else:
+            if "veikon" in event["organizer"]["displayName"].lower():
+                calendar = "Veikko"
+            else:
+                if "kristan" in event["organizer"]["displayName"].lower():
+                    calendar = "Krista"
+                else:
+                    calendar = "Good to know"
+
         out.append({
             "start": event["start"].get("dateTime", event["start"].get("date")),
             "summary": event["summary"],
-            "creator": event["creator"]["email"]
+            #"creator": event["creator"]["email"], # I don't actually need this
+            "calendar": calendar # This tells me whose calendar it is
         })
 
     return out

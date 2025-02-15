@@ -26,6 +26,11 @@ The following configuration values can be set under the `Valve` class:
 - **`default_calendar_entries`** (optional): The default number of calendar entries to fetch (default: 10).
 - **`default_email_entries`** (optional): The default number of email entries to fetch (default: 10).
 
+### special notes for Docker
+
+- the oath authorization can't be done when using Open WebUI docker container. Do the authorization by running the test.py locally and copy the created `token.json` to the container directory `/app/backend`
+- note! by default this directory is in the docker volume and will be destroyed in every restart. 
+
 ## Usage
 
 - Enable the "Google Tools" tool for your model.

@@ -28,7 +28,7 @@ def main():
             body = input("Enter body content: ")
             print(tools.gmail_create_draft(to=to, subject=subject, body=body))
         elif choice == "4":
-            count = int(input("Enter the number of events to fetch (-1 for default): "))
+            count = int(input("Enter the number of events to fetch (leave empty for 10 entries): ")) or "-1"
             print(tools.get_user_events(count=count))
         elif choice == "5":
             break

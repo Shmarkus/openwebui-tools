@@ -1,4 +1,4 @@
-import os
+#!/usr/bin/env python3
 import argparse
 
 from google_tools import Tools

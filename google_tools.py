@@ -340,6 +340,7 @@ def get_calendar_ids(service) -> list:
     cals = calendars.get("items", [])
     for cal in cals:
         out.append(cal["id"])
+    logger.debug(f"Got following calendars {out}")
 
     return out
 
@@ -369,12 +370,14 @@ def get_cal_evts(service, calendarId, number_of_events, from_time) -> list:
             calendar = "mine"
         else:
             if "veikon" in event["organizer"]["displayName"].lower():
+                continue
                 calendar = "Veikko"
             else:
                 if "kristan" in event["organizer"]["displayName"].lower():
+                    continue
                     calendar = "Krista"
                 else:
-                    calendar = "Good to know"
+                    calendar = "Good to know events"
 
         out.append({
             "start": event["start"].get("dateTime", event["start"].get("date")),

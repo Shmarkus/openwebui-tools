@@ -104,7 +104,7 @@ class Tools:
         )
         pass
 
-    async def get_user_emails(self, count: int = -1, label_id: str = "INBOX", __event_emitter__=None) -> str:
+    async def get_user_emails(self, count: int, label_id: str) -> str:
         """
         Retrieves and displays the latest emails from the user's Gmail inbox. Always return message ID to the user so
         that the message content can be later accessed separately.
